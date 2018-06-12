@@ -133,4 +133,37 @@ FROM
 		/*SELECT pelicula.nomPelicula as 'pelicula', COUNT(pelicula.fk_genero) AS 'genero' FROM pelicula
 		INNER JOIN generoPelicula ON generoPelicula.id = pelicula.fk_genero
 		GROUP BY pelicula.nomPelicula*/
-		
+----------------------------------------------------------------------------------
+-------------------------------PROCEDIMIENTOS-------------------------------------
+----------------------------------------------------------------------------------
+GO
+CREATE PROCEDURE agregar_pelicula 
+@nomPelicula VARCHAR(100),
+@nomGenero VARCHAR(100),
+@nomActor VARCHAR(100)
+AS
+	BEGIN
+	DECLARE @existe_nomPelicula BIT
+	DECLARE @existe_nomGenero BIT
+	DECLARE @existe_nomActor BIT
+	DECLARE @id_pelicula INT
+	DECLARE @id_generoPelicula INT
+	DECLARE @id_actor INT
+	
+	SET @existe_nomPelicula =(SELECT COUNT(*)FROM pelicula WHERE @nompelicula = @nomPelicula)
+	IF @existe_nomPelicula=0
+	BEGIN
+	INSERT INTO pelicula VALUES(@nomPelicula)
+			PRINT 'Pelicula Agregado!! :3'
+		END
+	ELSE
+		BEGIN 
+		PRINT 'Pelicula ya existe :C'
+		UPDATE pelicula SET @nomPelicula = @nomPelicula
+		WHERE @nomPelicula = @nomPelicula
+	END
+END
+
+
+
+DROP DATABASE bd_findeanio
